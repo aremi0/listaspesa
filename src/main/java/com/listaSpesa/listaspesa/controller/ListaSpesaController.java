@@ -1,8 +1,8 @@
 package com.listaSpesa.listaspesa.controller;
 
+import com.listaSpesa.listaspesa.GenericResponseDTO;
 import com.listaSpesa.listaspesa.entity.Articolo;
 import com.listaSpesa.listaspesa.entity.ListaSpesa;
-import com.listaSpesa.listaspesa.service.ArticoloService;
 import com.listaSpesa.listaspesa.service.ListaSpesaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,47 +10,48 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor // Crea un costruttore implicito per tutte le var final dentro la classe
 public class ListaSpesaController {
 
     private final ListaSpesaService listaSpesaService;
-    private final ArticoloService articoloService;
+
+
+    @GetMapping("/api/utente/{id_utente}/listaspesa")
+    public ResponseEntity<GenericResponseDTO<ListaSpesa>> getListaSpesaOfUtente(@PathVariable int id_utente) {
+        return ResponseEntity.ok(listaSpesaService.getListaSpesaOfUtente(id_utente));
+    }
+
+    @PostMapping("/api/utente/{id_utente}/listaspesa")
+    public ResponseEntity<GenericResponseDTO<ListaSpesa>> insertListaSpesaForUtente(
+            @PathVariable int id_utente, @RequestBody Map<String, Integer> listaspesa) {
+        return ResponseEntity.ok(listaSpesaService.insertListaSpesaForUtente(id_utente, listaspesa));
+    }
+
+
+
+
+
+
+
+
+
 
     // ResponseEntity è una classe wrapper che contiene, oltre l'oggetto, anche header, error, ecc...
-    @GetMapping("/")
-    public ResponseEntity<List<ListaSpesa>> getAllListeSpesa() {
-        return ResponseEntity.ok(listaSpesaService.getAllListeSpesa());
-    }
-
-    @GetMapping("/{idLista}")
-    public ResponseEntity<List<Articolo>> getListaById (@PathVariable int idLista) {
-        return ResponseEntity.ok(articoloService.findArticoliByListaSpesa(idLista));
-    }
-
-    @PostMapping("/")
-    public void insertLista(@RequestBody List<Articolo> entities) {
-        try{
-            listaSpesaService.addListaSpesa(entities);
-        } catch (MalformedURLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    @PostMapping("/{idLista}")
-    public void insertArticoli(@PathVariable int idLista, @RequestBody List<Articolo> entries) {
-        listaSpesaService.inserisciArticoliInLista(idLista, entries);
-    }
-
-    @PutMapping("/{idLista}/{idArticolo}")
-    public void updateArticolo(@PathVariable int idLista, @PathVariable int idArticolo,
-                               @RequestBody Articolo entry) {
-        articoloService.updateArticolo(idLista, idArticolo, entry);
-    }
-
-    @DeleteMapping("/{idLista}/{idArticolo}")
-    public void removeArticolo(@PathVariable int idLista, @PathVariable int idArticolo) {
-        articoloService.removeArticolo(idLista, idArticolo);
-    }
+//    @GetMapping("/")
+//    public ResponseEntity<GenericResponseDTO<ListaSpesa>> getAllListeSpesa() {
+//        return ResponseEntity.ok(listaSpesaService.getAllListeSpesa());
+//    }
+//
+//    @PostMapping("/")
+//    public ResponseEntity<GenericResponseDTO<ListaSpesa>> insertLista(@RequestBody List<Articolo> entities) {
+//        return ResponseEntity.ok(listaSpesaService.addListaSpesa(entities));
+//    }
+//
+//    @PostMapping("/{idLista}")
+//    public void insertArticoli(@PathVariable int idLista, @RequestBody List<Articolo> entries) {
+//        listaSpesaService.inserisciArticoliInLista(idLista, entries);
+//    }
 }

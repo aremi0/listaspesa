@@ -1,51 +1,120 @@
 package com.listaSpesa.listaspesa.service;
 
-import com.listaSpesa.listaspesa.entity.Articolo;
+import com.listaSpesa.listaspesa.GenericResponseDTO;
 import com.listaSpesa.listaspesa.entity.ListaSpesa;
+import com.listaSpesa.listaspesa.entity.Utente;
 import com.listaSpesa.listaspesa.repository.ArticoloRepository;
 import com.listaSpesa.listaspesa.repository.ListaSpesaRepository;
+import com.listaSpesa.listaspesa.repository.UtenteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ListaSpesaService {
 
-    private final ListaSpesaRepository listaSpesaRepo;
+    private final ListaSpesaRepository listaSpesaRepository;
+    private final UtenteRepository utenteRepository;
     private final ArticoloRepository articoloRepository;
 
-    public List<ListaSpesa> getAllListeSpesa() {
-        return listaSpesaRepo.findAll();
-    }
+    public GenericResponseDTO<ListaSpesa> insertListaSpesaForUtente(int idUtente, Map<String, Integer> listaspesa) {
+        Optional<Utente> utente = utenteRepository.findById(idUtente);
 
-    public void addListaSpesa(List<Articolo> entities) throws MalformedURLException {
-
-        ListaSpesa res = new ListaSpesa();
-        res.setNElementi(res.getNElementi() + entities.size());
-        res = listaSpesaRepo.save(res); // Salvo in DB la lista settando l'ID autogenerato;
-
-        // setto qui, prima di salvare gli articoli in DB, gli idLista di tutti gli articoli
-        List<Articolo> tmp = entities;
-        for (var e : tmp) {
-            e.setListaSpesa(res);
+        if (utente.isEmpty()) {
+            return new GenericResponseDTO<>(null, true,
+                    "insertListaSpesa() error: Utente non trovato!");
         }
 
-        articoloRepository.saveAll(entities); // Salvo in DB la gli articoli settando l'ID autogenerato;
-        listaSpesaRepo.save(res);
-    }
+        List<ListaSpesa> listaSpesa = new ArrayList<>();
+        ListaSpesa ls = new ListaSpesa();
+        ls.setProprietario(utente.get());
 
-    public void inserisciArticoliInLista(int idLista, List<Articolo> entries) {
-        ListaSpesa res = listaSpesaRepo.findListaSpesaByIdLista(idLista);
-        res.setNElementi(res.getNElementi() + entries.size());
-
-        for (var articolo : entries) {
-            articolo.setListaSpesa(res);
-            articoloRepository.save(articolo);
+        for (var entry : listaspesa.entrySet()) {
+            ls.setNomeArticolo(entry.getKey());
+            ls.setQuantita(entry.getValue());
+            listaSpesa.add(listaSpesaRepository.save(ls));
         }
 
-        listaSpesaRepo.save(res);
+        try {
+            return new GenericResponseDTO<>(listaSpesa, false, null);
+        } catch (Exception e) {
+            return new GenericResponseDTO<>(null, true,
+                    "insertListaSpesa() error: " + e.getMessage());
+        }
     }
+
+    public GenericResponseDTO<ListaSpesa> getListaSpesaOfUtente(int idUtente) {
+        Optional<Utente> utente = utenteRepository.findById(idUtente);
+
+        if (utente.isEmpty()) {
+            return new GenericResponseDTO<>(null, true,
+                    "insertListaSpesa() error: Utente non trovato!");
+        }
+
+        List<ListaSpesa> listaSpesa = new ArrayList<>(listaSpesaRepository.findListaSpesaByProprietario(utente.get()));
+
+        try {
+            return new GenericResponseDTO<>(listaSpesa, false, null);
+        } catch (Exception e) {
+            return new GenericResponseDTO<>(null, true,
+                    "insertListaSpesa() error: " + e.getMessage());
+        }
+    }
+
+//    public GenericResponseDTO<ListaSpesa> getAllListeSpesa() {
+//        try {
+//            genericResponseDTO = new GenericResponseDTO<>(listaSpesaRepo.findAll(),
+//                    false, null);
+//        } catch (Exception e) {
+//            genericResponseDTO = new GenericResponseDTO<>(null,
+//                    true, "getAllListeSpesa() error: " + e.getMessage());
+//        }
+//
+//        return genericResponseDTO;
+//    }
+//
+//    public GenericResponseDTO<ListaSpesa> addListaSpesa(List<Articolo> entities) {
+//
+//        List<ListaSpesa> ret = new ArrayList<>();
+//        ListaSpesa res = new ListaSpesa();
+//
+//        for (var e : entities) {
+//            res.setArticoli(e);
+//            ret.add(listaSpesaRepo.save(res));
+//        }
+//
+//        try {
+//            genericResponseDTO = new GenericResponseDTO<>(ret,
+//                    false, null);
+//        } catch (Exception e) {
+//            genericResponseDTO = new GenericResponseDTO<>(null,
+//                    true, "addListaSpesa() error: " + e.getMessage());
+//        }
+//
+//        return genericResponseDTO;
+//    }
+//
+//    public GenericResponseDTO<ListaSpesa> inserisciArticoliInLista(int idLista, List<Articolo> entries) {
+//
+//        ListaSpesa res
+//
+//        for (var articolo : entries) {
+//
+//        }
+//
+//        try {
+//            genericResponseDTO = new GenericResponseDTO<>(List.of(listaSpesaRepo.save(res)),
+//                    false, null);
+//        } catch (Exception e) {
+//            genericResponseDTO = new GenericResponseDTO<>(null,
+//                    true, "addListaSpesa() error: " + e.getMessage());
+//        }
+//
+//        return genericResponseDTO;
+//    }
 }

@@ -5,26 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-
 import javax.persistence.*;
-
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ListaSpesa {
+public class Utente {
+
     @Id
     @GeneratedValue
-    private int idLista;
+    private int idUtente;
 
-    @NonNull
-    private String nomeArticolo;
-
-    @NonNull
-    private int quantita;
-
-    @ManyToOne
-    @NonNull
-    private Utente proprietario;
+    private String nomeUtente;
 }

@@ -16,17 +16,4 @@ public class Articolo {
 
     @NonNull
     private String nomeArticolo;
-
-    @ManyToOne
-    @NonNull
-    private ListaSpesa listaSpesa;
-
-    @Override
-    public String toString() {
-        return "Articolo{" +
-                "idArticolo=" + idArticolo +
-                ", nomeArticolo='" + nomeArticolo + '\'' +
-                ", listaSpesa=" + listaSpesa +
-                '}';
-    }
 }

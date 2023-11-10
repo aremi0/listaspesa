@@ -1,6 +1,6 @@
 package com.listaSpesa.listaspesa.controller;
 
-import com.listaSpesa.listaspesa.GenericResponseDTO;
+import com.listaSpesa.listaspesa.utils.GenericResponse;
 import com.listaSpesa.listaspesa.entity.Articolo;
 import com.listaSpesa.listaspesa.service.ArticoloService;
 import lombok.RequiredArgsConstructor;
@@ -11,17 +11,18 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/articoli")
 public class ArticoloController {
 
     private final ArticoloService articoloService;
 
-    @GetMapping("/api/articoli")
-    public ResponseEntity<GenericResponseDTO<Articolo>> getAllArticoli() {
+    @GetMapping
+    public ResponseEntity<GenericResponse<Articolo>> getAll() {
         return ResponseEntity.ok(articoloService.getAllArticoli());
     }
 
-    @PostMapping("/api/articoli")
-    public ResponseEntity<GenericResponseDTO<Articolo>> insertArticoli(@RequestBody List<Articolo> entries) {
+    @PostMapping
+    public ResponseEntity<GenericResponse<Articolo>> insert(@RequestBody List<Articolo> entries) {
         return ResponseEntity.ok(articoloService.insertArticoli(entries));
     }
 

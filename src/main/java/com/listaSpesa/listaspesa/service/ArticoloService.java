@@ -1,6 +1,6 @@
 package com.listaSpesa.listaspesa.service;
 
-import com.listaSpesa.listaspesa.GenericResponseDTO;
+import com.listaSpesa.listaspesa.utils.GenericResponse;
 import com.listaSpesa.listaspesa.entity.Articolo;
 import com.listaSpesa.listaspesa.repository.ArticoloRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,26 +15,23 @@ public class ArticoloService {
 
     private final ArticoloRepository articoloRepository;
 
-    public GenericResponseDTO<Articolo> insertArticoli(List<Articolo> entries) {
-        List<Articolo> articoli = new ArrayList<>();
+    public GenericResponse<Articolo> insertArticoli(List<Articolo> entries) {
 
-        for (var e : entries) {
-            articoli.add(articoloRepository.save(e));
-        }
+        List<Articolo> articoli = articoloRepository.saveAll(entries);
 
         try {
-            return new GenericResponseDTO<>(articoli, false, null);
+            return new GenericResponse<>(articoli, false, null);
         } catch (Exception e) {
-            return new GenericResponseDTO<>(null, true,
+            return new GenericResponse<>(null, true,
                     "insertArticoli() error: " + e.getMessage());
         }
     }
 
-    public GenericResponseDTO<Articolo> getAllArticoli() {
+    public GenericResponse<Articolo> getAllArticoli() {
         try {
-            return new GenericResponseDTO<>(articoloRepository.findAll(), false, null);
+            return new GenericResponse<>(articoloRepository.findAll(), false, null);
         } catch (Exception e) {
-            return new GenericResponseDTO<>(null, true,
+            return new GenericResponse<>(null, true,
                     "getAllArticoli() error: " + e.getMessage());
         }
     }

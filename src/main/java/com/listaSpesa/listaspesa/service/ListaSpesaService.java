@@ -1,6 +1,10 @@
 package com.listaSpesa.listaspesa.service;
 
-import com.listaSpesa.listaspesa.GenericResponseDTO;
+import com.listaSpesa.listaspesa.entity.Articolo;
+import com.listaSpesa.listaspesa.entity.ArticoloAcquisto;
+import com.listaSpesa.listaspesa.repository.ArticoloAcquistoRepository;
+import com.listaSpesa.listaspesa.utils.GenericResponse;
+import com.listaSpesa.listaspesa.dto.ListaSpesaRequest;
 import com.listaSpesa.listaspesa.entity.ListaSpesa;
 import com.listaSpesa.listaspesa.entity.Utente;
 import com.listaSpesa.listaspesa.repository.ArticoloRepository;
@@ -11,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -20,48 +23,49 @@ public class ListaSpesaService {
 
     private final ListaSpesaRepository listaSpesaRepository;
     private final UtenteRepository utenteRepository;
+    private final ArticoloAcquistoRepository articoloAcquistoRepository;
     private final ArticoloRepository articoloRepository;
 
-    public GenericResponseDTO<ListaSpesa> insertListaSpesaForUtente(int idUtente, Map<String, Integer> listaspesa) {
-        Optional<Utente> utente = utenteRepository.findById(idUtente);
+    public GenericResponse<ListaSpesa> insertListaSpesaToUtente(int id, ListaSpesaRequest entry) {
+        Optional<Utente> utente = utenteRepository.findById(id);
 
         if (utente.isEmpty()) {
-            return new GenericResponseDTO<>(null, true,
+            return new GenericResponse<>(null, true,
                     "insertListaSpesa() error: Utente non trovato!");
         }
 
-        List<ListaSpesa> listaSpesa = new ArrayList<>();
-        ListaSpesa ls = new ListaSpesa();
-        ls.setProprietario(utente.get());
+        List<ArticoloAcquisto> tmp = articoloAcquistoRepository.saveAll(entry.getArticoli());
 
-        for (var entry : listaspesa.entrySet()) {
-            ls.setNomeArticolo(entry.getKey());
-            ls.setQuantita(entry.getValue());
-            listaSpesa.add(listaSpesaRepository.save(ls));
-        }
+        ListaSpesa res = new ListaSpesa();
+        res.setNomeListaspesa(entry.getNomeListaspesa());
+        res.setProprietario(utente.get());
+        res.setArticoli(entry.getArticoli());
+
+        res = listaSpesaRepository.save(res);
+
 
         try {
-            return new GenericResponseDTO<>(listaSpesa, false, null);
+            return new GenericResponse<>(List.of(res), false, null);
         } catch (Exception e) {
-            return new GenericResponseDTO<>(null, true,
+            return new GenericResponse<>(null, true,
                     "insertListaSpesa() error: " + e.getMessage());
         }
     }
 
-    public GenericResponseDTO<ListaSpesa> getListaSpesaOfUtente(int idUtente) {
+    public GenericResponse<ListaSpesa> getListaSpesaOfUtente(int idUtente) {
         Optional<Utente> utente = utenteRepository.findById(idUtente);
 
         if (utente.isEmpty()) {
-            return new GenericResponseDTO<>(null, true,
+            return new GenericResponse<>(null, true,
                     "insertListaSpesa() error: Utente non trovato!");
         }
 
-        List<ListaSpesa> listaSpesa = new ArrayList<>(listaSpesaRepository.findListaSpesaByProprietario(utente.get()));
+        List<ListaSpesa> listaSpesa = new ArrayList<>(listaSpesaRepository.findListaSpesasByProprietario(utente.get()));
 
         try {
-            return new GenericResponseDTO<>(listaSpesa, false, null);
+            return new GenericResponse<>(listaSpesa, false, null);
         } catch (Exception e) {
-            return new GenericResponseDTO<>(null, true,
+            return new GenericResponse<>(null, true,
                     "insertListaSpesa() error: " + e.getMessage());
         }
     }

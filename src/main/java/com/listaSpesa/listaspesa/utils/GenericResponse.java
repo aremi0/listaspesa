@@ -1,4 +1,4 @@
-package com.listaSpesa.listaspesa;
+package com.listaSpesa.listaspesa.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GenericResponseDTO<T> {
+public class GenericResponse<T> {
     private List<T> objects;
     private boolean isError;
     private String errorMessage;

@@ -1,33 +1,32 @@
 package com.listaSpesa.listaspesa.controller;
 
-import com.listaSpesa.listaspesa.GenericResponseDTO;
-import com.listaSpesa.listaspesa.entity.Articolo;
+import com.listaSpesa.listaspesa.utils.GenericResponse;
+import com.listaSpesa.listaspesa.dto.ListaSpesaRequest;
 import com.listaSpesa.listaspesa.entity.ListaSpesa;
 import com.listaSpesa.listaspesa.service.ListaSpesaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.MalformedURLException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor // Crea un costruttore implicito per tutte le var final dentro la classe
+@RequestMapping("/api/utente/{id}")
 public class ListaSpesaController {
 
     private final ListaSpesaService listaSpesaService;
 
 
-    @GetMapping("/api/utente/{id_utente}/listaspesa")
-    public ResponseEntity<GenericResponseDTO<ListaSpesa>> getListaSpesaOfUtente(@PathVariable int id_utente) {
-        return ResponseEntity.ok(listaSpesaService.getListaSpesaOfUtente(id_utente));
+    @GetMapping("/listaspesa")
+    public ResponseEntity<GenericResponse<ListaSpesa>> getListaSpesaOfUtente(@PathVariable int id) {
+        return ResponseEntity.ok(listaSpesaService.getListaSpesaOfUtente(id));
     }
 
-    @PostMapping("/api/utente/{id_utente}/listaspesa")
-    public ResponseEntity<GenericResponseDTO<ListaSpesa>> insertListaSpesaForUtente(
-            @PathVariable int id_utente, @RequestBody Map<String, Integer> listaspesa) {
-        return ResponseEntity.ok(listaSpesaService.insertListaSpesaForUtente(id_utente, listaspesa));
+    @PostMapping("/listaspesa")
+    public ResponseEntity<GenericResponse<ListaSpesa>> insertListaSpesaToUtente(
+            @PathVariable int id, @RequestBody ListaSpesaRequest entry) {
+        return ResponseEntity.ok(listaSpesaService.insertListaSpesaToUtente(id, entry));
     }
 
 

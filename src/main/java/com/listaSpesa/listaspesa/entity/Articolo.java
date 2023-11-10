@@ -1,6 +1,10 @@
 package com.listaSpesa.listaspesa.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
@@ -12,8 +16,8 @@ public class Articolo {
 
     @Id
     @GeneratedValue
-    private int idArticolo;
+    private int id;
 
-    @NonNull
-    private String nomeArticolo;
+    @Column(nullable = false)
+    private String nome;
 }

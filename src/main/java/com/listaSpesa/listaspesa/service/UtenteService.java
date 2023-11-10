@@ -1,6 +1,7 @@
 package com.listaSpesa.listaspesa.service;
 
-import com.listaSpesa.listaspesa.GenericResponseDTO;
+import com.listaSpesa.listaspesa.entity.ListaSpesa;
+import com.listaSpesa.listaspesa.utils.GenericResponse;
 import com.listaSpesa.listaspesa.entity.Utente;
 import com.listaSpesa.listaspesa.repository.UtenteRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ public class UtenteService {
 
     private final UtenteRepository utenteRepository;
 
-    public GenericResponseDTO<Utente> insertUtenti(List<Utente> entries) {
+    public GenericResponse<Utente> insertUtenti(List<Utente> entries) {
         List<Utente> utenti = new ArrayList<>();
 
         for (var e : entries) {
@@ -23,18 +24,18 @@ public class UtenteService {
         }
 
         try {
-            return new GenericResponseDTO<>(utenti, false, null);
+            return new GenericResponse<>(utenti, false, null);
         } catch (Exception e) {
-            return new GenericResponseDTO<>(null, true,
+            return new GenericResponse<>(null, true,
                     "insertUtenti() error: " + e.getMessage());
         }
     }
 
-    public GenericResponseDTO<Utente> getAllUtenti() {
+    public GenericResponse<Utente> getAllUtenti() {
         try {
-            return new GenericResponseDTO<>(utenteRepository.findAll(), false, null);
+            return new GenericResponse<>(utenteRepository.findAll(), false, null);
         } catch (Exception e) {
-            return new GenericResponseDTO<>(null, true,
+            return new GenericResponse<>(null, true,
                     "getAllUtenti() error: " + e.getMessage());
         }
     }

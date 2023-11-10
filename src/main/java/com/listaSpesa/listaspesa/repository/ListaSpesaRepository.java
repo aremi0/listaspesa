@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ListaSpesaRepository extends JpaRepository<ListaSpesa, Integer> {
-    ListaSpesa findListaSpesaByIdLista(int idLista);
-    List<ListaSpesa> findListaSpesaByProprietario(Utente proprietario);
+
+    List<ListaSpesa> findListaSpesasByProprietario(Utente p);
 }

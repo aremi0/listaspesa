@@ -1,11 +1,14 @@
 package com.listaSpesa.listaspesa.entity;
 
+import org.springframework.lang.NonNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,7 +18,10 @@ public class Utente {
 
     @Id
     @GeneratedValue
-    private int idUtente;
+    private int id;
 
-    private String nomeUtente;
+    @Column(nullable = false)
+    private String nome;
+
+    private String email;
 }

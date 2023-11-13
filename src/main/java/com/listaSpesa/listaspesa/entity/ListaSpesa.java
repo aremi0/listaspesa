@@ -1,11 +1,8 @@
 package com.listaSpesa.listaspesa.entity;
 
-import com.listaSpesa.listaspesa.dto.ListaSpesaRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
 
 import javax.persistence.*;
@@ -22,9 +19,9 @@ public class ListaSpesa {
     @GeneratedValue
     private int id;
 
-    @OneToMany(targetEntity = ArticoloAcquisto.class)
+    @OneToMany(targetEntity = ArticoloUtente.class)
     @Column(nullable = false)
-    private List<ArticoloAcquisto> articoli;
+    private List<ArticoloUtente> articoli;
 
     @ManyToOne
     @JoinColumn(name = "utente_id")

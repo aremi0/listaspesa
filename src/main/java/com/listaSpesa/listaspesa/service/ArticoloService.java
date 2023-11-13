@@ -1,5 +1,6 @@
 package com.listaSpesa.listaspesa.service;
 
+import com.listaSpesa.listaspesa.exception.CommonException;
 import com.listaSpesa.listaspesa.utils.GenericResponse;
 import com.listaSpesa.listaspesa.entity.Articolo;
 import com.listaSpesa.listaspesa.repository.ArticoloRepository;

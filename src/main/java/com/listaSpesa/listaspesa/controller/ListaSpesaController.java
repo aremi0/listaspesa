@@ -1,5 +1,6 @@
 package com.listaSpesa.listaspesa.controller;
 
+import com.listaSpesa.listaspesa.entity.ArticoloUtente;
 import com.listaSpesa.listaspesa.utils.GenericResponse;
 import com.listaSpesa.listaspesa.dto.ListaSpesaRequest;
 import com.listaSpesa.listaspesa.entity.ListaSpesa;

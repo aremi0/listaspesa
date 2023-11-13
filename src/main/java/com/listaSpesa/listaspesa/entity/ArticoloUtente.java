@@ -12,17 +12,17 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticoloAcquisto {
+public class ArticoloUtente {
 
     @Id
     @GeneratedValue
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name = "articolo_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Articolo articolo;
 
     @Column(nullable = false)
-    private float quantita;
+    private int quantita;
 }

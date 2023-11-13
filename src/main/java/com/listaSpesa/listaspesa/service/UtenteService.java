@@ -5,10 +5,13 @@ import com.listaSpesa.listaspesa.utils.GenericResponse;
 import com.listaSpesa.listaspesa.entity.Utente;
 import com.listaSpesa.listaspesa.repository.UtenteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,17 +20,21 @@ public class UtenteService {
     private final UtenteRepository utenteRepository;
 
     public GenericResponse<Utente> insertUtenti(List<Utente> entries) {
-        List<Utente> utenti = new ArrayList<>();
+        Optional<Utente> utente;
 
         for (var e : entries) {
-            utenti.add(utenteRepository.save(e));
+            utente = utenteRepository.findUtenteByEmail(e.getEmail());
+
+            if(utente.isPresent())
+                throw new InvalidParameterException("insertUtenti() error: " +
+                        utente.get().getEmail() + " già utilizzata!");
         }
 
         try {
+            List<Utente> utenti = utenteRepository.saveAll(entries);
             return new GenericResponse<>(utenti, false, null);
-        } catch (Exception e) {
-            return new GenericResponse<>(null, true,
-                    "insertUtenti() error: " + e.getMessage());
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalStateException("insertUtenti() error: Alcuni utenti presentano parametri illegali!");
         }
     }
 

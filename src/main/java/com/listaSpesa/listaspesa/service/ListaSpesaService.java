@@ -1,7 +1,7 @@
 package com.listaSpesa.listaspesa.service;
 
 import com.listaSpesa.listaspesa.entity.ArticoloUtente;
-import com.listaSpesa.listaspesa.repository.ArticoloAcquistoRepository;
+import com.listaSpesa.listaspesa.repository.ArticoloUtenteRepository;
 import com.listaSpesa.listaspesa.utils.GenericResponse;
 import com.listaSpesa.listaspesa.dto.ListaSpesaRequest;
 import com.listaSpesa.listaspesa.entity.ListaSpesa;
@@ -21,16 +21,16 @@ public class ListaSpesaService {
 
     private final ListaSpesaRepository listaSpesaRepository;
     private final UtenteRepository utenteRepository;
-    private final ArticoloAcquistoRepository articoloAcquistoRepository;
+    private final ArticoloUtenteRepository articoloUtenteRepository;
 
-    public GenericResponse<ListaSpesa> insertListaSpesaToUtente(int id, ListaSpesaRequest entry) {
-        Optional<Utente> utente = utenteRepository.findById(id);
+    public GenericResponse<ListaSpesa> insertListaSpesaToUtente(int idUtente, ListaSpesaRequest entry) {
+        Optional<Utente> utente = utenteRepository.findById(idUtente);
 
         if (utente.isEmpty()) {
             throw new IllegalStateException("insertListaSpesa() error: Utente non trovato!");
         }
 
-        List<ArticoloUtente> tmp = articoloAcquistoRepository.saveAll(entry.getArticoli());
+        List<ArticoloUtente> tmp = articoloUtenteRepository.saveAll(entry.getArticoli());
 
         ListaSpesa res = new ListaSpesa();
         res.setNomeListaspesa(entry.getNomeListaspesa());
@@ -56,7 +56,7 @@ public class ListaSpesaService {
         List<ListaSpesa> listaSpesa = new ArrayList<>(listaSpesaRepository.findListaSpesasByProprietario(utente.get()));
 
         try {
-            return new GenericResponse<ListaSpesa>(listaSpesa, false, null);
+            return new GenericResponse<>(listaSpesa, false, null);
         } catch (Exception e) {
             return new GenericResponse<>(null, true,
                     "insertListaSpesa() error: " + e.getMessage());

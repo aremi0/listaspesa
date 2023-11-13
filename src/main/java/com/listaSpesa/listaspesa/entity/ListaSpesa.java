@@ -16,16 +16,17 @@ import java.util.List;
 public class ListaSpesa {
 
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "listaspesa_seq", sequenceName = "listaspesa_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "listaspesa_seq" )
     private int id;
 
-    @OneToMany(targetEntity = ArticoloUtente.class)
-    @Column(nullable = false)
-    private List<ArticoloUtente> articoli;
+    private String nomeListaspesa;
 
     @ManyToOne
     @JoinColumn(name = "utente_id")
     private Utente proprietario;
 
-    private String nomeListaspesa;
+    @OneToMany(targetEntity = ArticoloUtente.class)
+    @Column(nullable = false)
+    private List<ArticoloUtente> articoli;
 }

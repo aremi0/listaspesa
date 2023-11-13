@@ -11,4 +11,5 @@ import java.util.List;
 public interface ListaSpesaRepository extends JpaRepository<ListaSpesa, Integer> {
 
     List<ListaSpesa> findListaSpesasByProprietario(Utente p);
+
 }

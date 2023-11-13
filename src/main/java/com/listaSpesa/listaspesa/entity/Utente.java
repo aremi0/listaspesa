@@ -17,11 +17,12 @@ import java.util.List;
 public class Utente {
 
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "utente_seq", sequenceName = "utente_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "utente_seq" )
     private int id;
-
-    private String nome;
 
     @Column(nullable = false)
     private String email;
+
+    private String nome;
 }

@@ -39,11 +39,6 @@ public class UtenteService {
     }
 
     public GenericResponse<Utente> getAllUtenti() {
-        try {
-            return new GenericResponse<>(utenteRepository.findAll(), false, null);
-        } catch (Exception e) {
-            return new GenericResponse<>(null, true,
-                    "getAllUtenti() error: " + e.getMessage());
-        }
+        return new GenericResponse<>(utenteRepository.findAll(), false, null);
     }
 }

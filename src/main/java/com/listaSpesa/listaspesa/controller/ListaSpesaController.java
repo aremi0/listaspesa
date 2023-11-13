@@ -1,6 +1,5 @@
 package com.listaSpesa.listaspesa.controller;
 
-import com.listaSpesa.listaspesa.entity.ArticoloUtente;
 import com.listaSpesa.listaspesa.utils.GenericResponse;
 import com.listaSpesa.listaspesa.dto.ListaSpesaRequest;
 import com.listaSpesa.listaspesa.entity.ListaSpesa;
@@ -9,25 +8,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor // Crea un costruttore implicito per tutte le var final dentro la classe
-@RequestMapping("/api/utente/{id}")
+@RequestMapping("/api/utente/{id_utente}")
 public class ListaSpesaController {
 
     private final ListaSpesaService listaSpesaService;
 
 
     @GetMapping("/listaspesa")
-    public ResponseEntity<GenericResponse<ListaSpesa>> getListaSpesaOfUtente(@PathVariable int id) {
-        return ResponseEntity.ok(listaSpesaService.getListaSpesaOfUtente(id));
+    public ResponseEntity<GenericResponse<ListaSpesa>> getListaSpesaOfUtente(@PathVariable int id_utente) {
+        return ResponseEntity.ok(listaSpesaService.getListaSpesaOfUtente(id_utente));
     }
 
     @PostMapping("/listaspesa")
     public ResponseEntity<GenericResponse<ListaSpesa>> insertListaSpesaToUtente(
-            @PathVariable int id, @RequestBody ListaSpesaRequest entry) {
-        return ResponseEntity.ok(listaSpesaService.insertListaSpesaToUtente(id, entry));
+            @PathVariable int id_utente, @RequestBody ListaSpesaRequest entry) {
+        return ResponseEntity.ok(listaSpesaService.insertListaSpesaToUtente(id_utente, entry));
     }
 
 

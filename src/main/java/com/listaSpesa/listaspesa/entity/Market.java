@@ -14,11 +14,13 @@ import java.util.List;
 public class Market {
 
     @Id
+    @SequenceGenerator(name = "market_seq", sequenceName = "market_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "market_seq" )
     private int id;
 
     private String nome;
 
     @OneToMany(targetEntity = ArticoloMarket.class)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private List<ArticoloMarket> inventario;
 }

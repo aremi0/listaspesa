@@ -3,8 +3,6 @@ package com.listaSpesa.listaspesa.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
@@ -15,7 +13,8 @@ import javax.persistence.*;
 public class Articolo {
 
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "articolo_seq", sequenceName = "articolo_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "articolo_seq" )
     private int id;
 
     @Column(nullable = false)
